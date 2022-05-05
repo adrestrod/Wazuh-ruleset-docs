@@ -1,5 +1,4 @@
 # Wazuh Ruleset
----
 ### Índice
 
 1. Reglas y decoders custom
@@ -233,95 +232,84 @@ Debido a que en este documento nos centramos en las reglas de Wazuh, vamos a cen
 
 The **xml labels** used to configure ` rules ` are listed here.
 
-| Option                | Values                                            | Description                                                                                                                          |
-|-----------------------|---------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| rule                  | See table below.                                  | Its starts a new rule and its defining options.                                                                                      |
-| match                 | Any regular expression.                           | It will attempt to find a match in the log using sregex  by
-default, deciding if the rule should be triggered.                       |
-| regex                 | Any regular expression.                           | It does the same as match, but with regex as default.                                                                                |
-| decoded_as            | Any decoder’s name.                               | It will match with logs that have been decoded by a specific decoder.                                                                |
-| category              | Any type.                                         | It will match with logs whose decoder’s type concur.                                                                                 |
-| field                 | Name and any regular expression.                  | It will compare a field extracted by the decoder in order with a
-regular expression.                                                 |
-| srcip                 | Any IP address.                                   | It will compare the IP address with the IP decoded as srcip. Use “!” to negate it.                                                   |
-| dstip                 | Any IP address.                                   | It will compare the IP address with the IP decoded as dstip. Use “!” to negate it.                                                   |
-| srcport               | Any regular expression.                           | It will compare a regular expression representing a port with a value decoded as srcport.                                            |
-| dstport               | Any regular expression.                           | It will compare a regular expression representing a port with a value decoded as dstport.                                            |
-| data                  | Any regular expression.                           | It will compare a regular expression representing a data with a value decoded as  data.                                              |
-| extra_data            | Any regular expression.                           | It will compare a regular expression representing a extra data with a value decoded
-as extra_data.                                   |
-| user                  | Any regular expression.                           | It will compare a regular expression representing a user with a value decoded as user.                                               |
-| system_name           | Any regular expression.                           | It will compare a regular expression representing a system name with a value decoded
-as system_name.                                 |
-| program_name          | Any regular expression.                           | It will compare a regular expression representing a program name with a value pre-decoded
-as program_name.                           |
-| protocol              | Any regular expression.                           | It will compare a regular expression representing a protocol with a value decoded as protocol.                                       |
-| hostname              | Any regular expression.                           | It will compare a regular expression representing a hostname with a value pre-decoded
-as hostname.                                   |
-| time                  | Any time range. e.g. (hh:mm-hh:mm)                | It checks if the event was generated during that time range.                                                                         |
-| weekday               | monday - sunday, weekdays, weekends               | It checks whether the event was generated during certain weekdays.                                                                   |
-| id                    | Any regular expression.                           | It will compare a regular expression representing an ID with a value decoded as id                                                   |
-| url                   | Any regular expression.                           | It will compare a regular expression representing a URL with a value decoded as url                                                  |
-| location              | Any regular expression.                           | It will compare a regular expression representing a location with a value pre-decoded
-as location.                                   |
-| action                | Any String or regular expression.                 | It will compare a string or regular expression representing an action with a value decoded
-as action.                                |
-| status                | Any regular expression.                           | It will compare a regular expression representing a status with a value decoded as status.                                           |
-| srcgeoip              | Any regular expression.                           | It will compare a regular expression representing a GeoIP source with a value decoded
-as srcgeoip.                                   |
-| dstgeoip              | Any regular expression.                           | It will compare a regular expression representing a GeoIP destination with a value decoded
-as dstgeoip.                              |
-| if_sid                | A list of rule IDs separated by commas or spaces. | It works similar to parent decoder. It will match when a rule ID on the list has previously matched.                                 |
-| if_group              | Any group name.                                   | It will match if the indicated group has matched before.                                                                             |
-| if_level              | Any level from 1 to 16.                           | It will match if that level has already been triggered by another rule.                                                              |
-| if_matched_sid        | Any rule ID (Number).                             | Similar to if_sid but it will only match if the ID has been triggered in a period of time.                                           |
-| if_matched_group      | Any group name.                                   | Similar to if_group but it will only match if the group has been triggered in a period of time.                                      |
-| same_id               | None.                                             | The decoded id must be the same.                                                                                                     |
-| different_id          | None.                                             | The decoded id must be different.                                                                                                    |
-| same_srcip            | None.                                             | The decoded srcip must be the same.                                                                                                  |
-| different_srcip       | None.                                             | The decoded srcip must be different.                                                                                                 |
-| same_dstip            | None.                                             | The decoded dstip must be the same.                                                                                                  |
-| different_dstip       | None.                                             | The decoded dstip must be different.                                                                                                 |
-| same_srcport          | None.                                             | The decoded srcport must be the same.                                                                                                |
-| different_srcport     | None.                                             | The decoded srcport must be different.                                                                                               |
-| same_dstport          | None.                                             | The decoded dstport must be the same.                                                                                                |
-| different_dstport     | None.                                             | The decoded dstport must be different.                                                                                               |
-| same_location         | None.                                             | The location must be the same.                                                                                                       |
-| different_location    | None.                                             | The location must be different.                                                                                                      |
-| same_srcuser          | None.                                             | The decoded srcuser must be the same.                                                                                                |
-| different_srcuser     | None.                                             | The decoded srcuser must be different.                                                                                               |
-| same_user             | None.                                             | The decoded user must be the same.                                                                                                   |
-| different_user        | None.                                             | The decoded user must be different.                                                                                                  |
-| not_same_agent        | None.                                             | The decoded agent must be different.                                                                                                 |
-| same_field            | None.                                             | The decoded field must be the same as the previous ones.                                                                             |
-| different_field       | None.                                             | The decoded field must be different than the previous ones.                                                                          |
-| same_protocol         | None.                                             | The decoded protocol must be the same.                                                                                               |
-| different_protocol    | None.                                             | The decoded protocol must be different.                                                                                              |
-| same_action           | None.                                             | The decoded action must be the same.                                                                                                 |
-| different_action      | None.                                             | The decoded action must be different.                                                                                                |
-| same_data             | None.                                             | The decoded data must be the same.                                                                                                   |
-| different_data        | None.                                             | The decoded data must be different.                                                                                                  |
-| same_extra_data       | None.                                             | The decoded extra_data must be the same.                                                                                             |
-| different_extra_data  | None.                                             | The decoded extra_data must be different.                                                                                            |
-| same_status           | None.                                             | The decoded status must be the same.                                                                                                 |
-| different_status      | None.                                             | The decoded status must be different.                                                                                                |
-| same_system_name      | None.                                             | The decoded system_name must be the same.                                                                                            |
-| different_system_name | None.                                             | The decoded system_name must be different.                                                                                           |
-| same_url              | None.                                             | The decoded url must be the same.                                                                                                    |
-| different_url         | None.                                             | The decoded url must be different.                                                                                                   |
-| same_srcgeoip         | None.                                             | The decoded srcgeoip must the same.                                                                                                  |
-| different_srcgeoip    | None.                                             | The decoded srcgeoip must be different.                                                                                              |
-| same_dstgeoip         | None.                                             | The decoded dstgeoip must the same.                                                                                                  |
-| different_dstgeoip    | None.                                             | The decoded dstgeoip must be different.                                                                                              |
-| description           | Any String.                                       | Provides a human-readable description to explain what is the purpose of the rule. Please, use this
-field when creating custom rules. |
-| list                  | Path to the CDB file.                             | Perform a CDB lookup using an ossec list.                                                                                            |
-| info                  | Any String.                                       | Extra information using certain attributes.                                                                                          |
-| options               | See the table below.                              | Additional rule options that can be used.                                                                                            |
-| check_diff            | None.                                             | Determines when the output of a command changes.                                                                                     |
-| group                 | Any String.                                       | Add additional groups to the alert.                                                                                                  |
-| mitre                 | See Mitre table below.                            | Contains Mitre Technique IDs that fit the rule                                                                                       |
-| var                   | Name for the variable. Most used: BAD_WORDS       | Defines a variable that can be used anywhere inside the same file.                                                                   |
+| Option                                             | Values                                            | Description                                                                                                |
+| -------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| rule                                               | See table below.                                  | Its starts a new rule and its defining options.                                                            |
+| match                                              | Any regular expression.                           | It will attempt to find a match in the log using sregex  by default, deciding if the rule should be triggered. |
+| regex                                              | Any regular expression.                           | It does the same as match, but with regex as default.                                                      |
+| decoded_as                                         | Any decoder’s name.                               | It will match with logs that have been decoded by a specific decoder.                                      |
+| category                                           | Any type.                                         | It will match with logs whose decoder’s type concur.                                                       |
+| field                                              | Name and any regular expression.| It will compare a field extracted by the decoder in order with a regular expression.                                     |
+| srcip                                              | Any IP address.                                   | It will compare the IP address with the IP decoded as srcip. Use “!” to negate it.                         |
+| dstip                                              | Any IP address.                                   | It will compare the IP address with the IP decoded as dstip. Use “!” to negate it.                         |
+| srcport                                            | Any regular expression.                           | It will compare a regular expression representing a port with a value decoded as srcport.                  |
+| dstport                                            | Any regular expression.                           | It will compare a regular expression representing a port with a value decoded as dstport.                  |
+| data                                               | Any regular expression.                           | It will compare a regular expression representing a data with a value decoded as  data.                    |
+| extra_data                                         | Any regular expression.                           | It will compare a regular expression representing a extra data with a value decoded as extra_data.         |
+| user                                               | Any regular expression.                           | It will compare a regular expression representing a user with a value decoded as user.                     |
+| system_name                                        | Any regular expression.                           | It will compare a regular expression representing a system name with a value decoded as system_name.       |
+| program_name                                       | Any regular expression.                           | It will compare a regular expression representing a program name with a value pre-decoded as program_name. |
+| protocol                                           | Any regular expression.                           | It will compare a regular expression representing a protocol with a value decoded as protocol.             |
+| hostname                                           | Any regular expression.                           | It will compare a regular expression representing a hostname with a value pre-decoded as hostname.         |
+| time                                               | Any time range. e.g. (hh:mm-hh:mm)                | It checks if the event was generated during that time range.                                               |
+| weekday                                            | monday - sunday, weekdays, weekends               | It checks whether the event was generated during certain weekdays.                                         |
+| id                                                 | Any regular expression.                           | It will compare a regular expression representing an ID with a value decoded as id                         |
+| url                                                | Any regular expression.                           | It will compare a regular expression representing a URL with a value decoded as url                        |
+| location                                           | Any regular expression.                           | It will compare a regular expression representing a location with a value pre-decoded as location.                                       |
+| action                                             | Any String or regular expression.                 | It will compare a string or regular expression representing an action with a value decoded as action.                                         |
+| status                                             | Any regular expression.                           | It will compare a regular expression representing a status with a value decoded as status.                 |
+| srcgeoip                                           | Any regular expression.                           | It will compare a regular expression representing a GeoIP source with a value decoded as srcgeoip.                                       |
+| dstgeoip                                           | Any regular expression.                           | It will compare a regular expression representing a GeoIP destination with a value decoded as dstgeoip.                                       |
+| if_sid                                             | A list of rule IDs separated by commas or spaces. | It works similar to parent decoder. It will match when a rule ID on the list has previously matched.       |
+| if_group                                           | Any group name.                                   | It will match if the indicated group has matched before.                                                   |
+| if_level                                           | Any level from 1 to 16.                           | It will match if that level has already been triggered by another rule.                                    |
+| if_matched_sid                                     | Any rule ID (Number).                             | Similar to if_sid but it will only match if the ID has been triggered in a period of time.                 |
+| if_matched_group                                   | Any group name.                                   | Similar to if_group but it will only match if the group has been triggered in a period of time.            |
+| same_id                                            | None.                                             | The decoded id must be the same.                                                                           |
+| different_id                                       | None.                                             | The decoded id must be different.                                                                          |
+| same_srcip                                         | None.                                             | The decoded srcip must be the same.                                                                        |
+| different_srcip                                    | None.                                             | The decoded srcip must be different.                                                                       |
+| same_dstip                                         | None.                                             | The decoded dstip must be the same.                                                                        |
+| different_dstip                                    | None.                                             | The decoded dstip must be different.                                                                       |
+| same_srcport                                       | None.                                             | The decoded srcport must be the same.                                                                      |
+| different_srcport                                  | None.                                             | The decoded srcport must be different.                                                                     |
+| same_dstport                                       | None.                                             | The decoded dstport must be the same.                                                                      |
+| different_dstport                                  | None.                                             | The decoded dstport must be different.                                                                     |
+| same_location                                      | None.                                             | The location must be the same.                                                                             |
+| different_location                                 | None.                                             | The location must be different.                                                                            |
+| same_srcuser                                       | None.                                             | The decoded srcuser must be the same.                                                                      |
+| different_srcuser                                  | None.                                             | The decoded srcuser must be different.                                                                     |
+| same_user                                          | None.                                             | The decoded user must be the same.                                                                         |
+| different_user                                     | None.                                             | The decoded user must be different.                                                                        |
+| not_same_agent                                     | None.                                             | The decoded agent must be different.                                                                       |
+| same_field                                         | None.                                             | The decoded field must be the same as the previous ones.                                                   |
+| different_field                                    | None.                                             | The decoded field must be different than the previous ones.                                                |
+| same_protocol                                      | None.                                             | The decoded protocol must be the same.                                                                     |
+| different_protocol                                 | None.                                             | The decoded protocol must be different.                                                                    |
+| same_action                                        | None.                                             | The decoded action must be the same.                                                                       |
+| different_action                                   | None.                                             | The decoded action must be different.                                                                      |
+| same_data                                          | None.                                             | The decoded data must be the same.                                                                         |
+| different_data                                     | None.                                             | The decoded data must be different.                                                                        |
+| same_extra_data                                    | None.                                             | The decoded extra_data must be the same.                                                                   |
+| different_extra_data                               | None.                                             | The decoded extra_data must be different.                                                                  |
+| same_status                                        | None.                                             | The decoded status must be the same.                                                                       |
+| different_status                                   | None.                                             | The decoded status must be different.                                                                      |
+| same_system_name                                   | None.                                             | The decoded system_name must be the same.                                                                  |
+| different_system_name                              | None.                                             | The decoded system_name must be different.                                                                 |
+| same_url                                           | None.                                             | The decoded url must be the same.                                                                          |
+| different_url                                      | None.                                             | The decoded url must be different.                                                                         |
+| same_srcgeoip                                      | None.                                             | The decoded srcgeoip must the same.                                                                        |
+| different_srcgeoip                                 | None.                                             | The decoded srcgeoip must be different.                                                                    |
+| same_dstgeoip                                      | None.                                             | The decoded dstgeoip must the same.                                                                        |
+| different_dstgeoip                                 | None.                                             | The decoded dstgeoip must be different.                                                                    |
+| description                                        | Any String.                                       | Provides a human-readable description to explain what is the purpose of the rule. Please, use this field when creating custom rules.                  |
+| list                                               | Path to the CDB file.                             | Perform a CDB lookup using an ossec list.                                                                  |
+| info                                               | Any String.                                       | Extra information using certain attributes.                                                                |
+| options                                            | See the table below.                              | Additional rule options that can be used.                                                                  |
+| check_diff                                         | None.                                             | Determines when the output of a command changes.                                                           |
+| group                                              | Any String.                                       | Add additional groups to the alert.                                                                        |
+| mitre                                              | See Mitre table below.                            | Contains Mitre Technique IDs that fit the rule                                                             |
+| var                                                | Name for the variable. Most used: BAD_WORDS       | Defines a variable that can be used anywhere inside the same file.                                         |
 
 
 
